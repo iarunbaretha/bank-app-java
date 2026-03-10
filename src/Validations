@@ -1,0 +1,7 @@
+ import java.util.*;
+
+import exceptions.ValidationException;
+@functional Interface
+interface  Validations<T>{
+void validate(String msg) throws ValidationException;
+}
