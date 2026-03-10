@@ -16,9 +16,22 @@ public class ServiceImpl implements BankServices{
   AccountRepo accountRepo =new AccountRepo();
   TransactionRepo transactionRepo =new TransactionRepo();
    CustomerRepo customerRepo =new CustomerRepo();
+
+  public final Validations<String> validateName =name ->{
+    if(name ==null || name.isBlank()) throw new ValidationException("PLEASE ENTER THE NAME IN CORRECT FORMATE");
+      };
+  public final Validations<String> validateEmail =email ->{
+    if(email ==null || email.Contains("@")) throw new ValidationException("PLEASE ENTER THE EMAIL IN CORRECT FORMATE");
+      };
+  public final Validations<String> validateType =type ->{
+    if(Type==null ||Type!=equalsIgnoreCase("SAVINGS")||Type!=equalsIgnoreCase("CURRENT")) throw new ValidationException("PLEASE ENTER THE TYPE  FROM GIVEN OPTIONS ");
+      };
  @Override
  public String openAccount(String name ,String email, String accType){
     String customerId = UUID.randomUUID().toString();
+   validateName.validate(name);
+   validateEmail.validate(email);
+   validateType.validate(type);
    Customer customer =new Customer(customerId,name,email);
     customerRepo.save(customer);
    
@@ -93,3 +106,4 @@ public class ServiceImpl implements BankServices{
              }
     
 }
+
