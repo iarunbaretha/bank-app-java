@@ -26,6 +26,8 @@ public class ServiceImpl implements BankServices{
   public final Validations<String> validateType =type ->{
     if(Type==null ||Type!=equalsIgnoreCase("SAVINGS")||Type!=equalsIgnoreCase("CURRENT")) throw new ValidationException("PLEASE ENTER THE TYPE  FROM GIVEN OPTIONS ");
       };
+  public final Validations <Double> validateAmountPositive = amount ->{
+ if(amount==null || ammount<0)  throw new ValidationException("Enter a valid and correct amount");};
  @Override
  public String openAccount(String name ,String email, String accType){
     String customerId = UUID.randomUUID().toString();
@@ -49,6 +51,7 @@ public class ServiceImpl implements BankServices{
   }
     public void deposit(String accountNumber ,double amount,String note){
     Account account =accountRepo.searchByNumber(accountNumber).
+      validat
       orElseThrow(()-> new AccountNotFoundException("Account Not Found :"+accountNumber));
      account.setBalance(account.getBalance() + amount);
       //genrate an trensaction id
@@ -58,6 +61,7 @@ public class ServiceImpl implements BankServices{
       transactionRepo.add(transaction);
     }
   public void withdraw(String accountNumber ,double amount,String note){
+    validateAmountPositive.validate(amount);
     Account account =accountRepo.searchByNumber(accountNumber).
       orElseThrow(()-> new AccountNotFoundException("Account Not Found :"+accountNumber));
     if(account.getBalance()<amount)
@@ -106,4 +110,5 @@ public class ServiceImpl implements BankServices{
              }
     
 }
+
 
